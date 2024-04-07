@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css"> 
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: #f9f9f9;
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        body{
+            background-color:  rgba(124, 15, 15, 0.468); ;
+        }
+        form {
+            margin-bottom: 20px; 
+        }
+
+        .btn-primary {
+            width: 100%; 
+        }
+
+        p {
+            text-align: center; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color:  rgb(124, 15, 15);">Register</h2>
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: rgb(124, 15, 15); border-color: rgb(124, 15, 15);">Register</button>
+        </form>
+        <p>Already have an account? <a href="/login" style="color:  rgb(124, 15, 15); ;">Login here</a>.</p>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

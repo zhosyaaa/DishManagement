@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Foodie!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="js/userEmail.js"></script>
+    <style>
+          .card {
+            transition: transform 0.3s ease-in-out; 
+        }
+        .card:hover {
+            transform: translateY(-10px); 
+        }
+       
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navigation-wrap">
+            <div class="container">
+                <a class="navbar-brand" href="/index?lang=<%= currentLanguage %>"><img src="images/logo.png" alt="logo"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars navbar-toggle-icon"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/index?lang=<%= currentLanguage %>"><%= language.Home %></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/allDishes?lang=<%= currentLanguage %>"><%= language.Alldishes %></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/recipes?lang=<%= currentLanguage %>"><%= language.Recipes %></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/nutrition?lang=<%= currentLanguage %>"><%= language.Nutrition %></a>
+                        </li>
+                        <li>
+                            <a href="/logout" class="nav-link" data-nav-link>
+                                <%= language.logout %>
+                            </a>
+                        </li>
+                        <% if (isAdmin) { %>
+                            <li>
+                                <a class="nav-link" href="/admin?lang=<%= currentLanguage %>">
+                                    <%= language.isAdmin %>
+                                </a>
+                            </li>
+                            <% } %>
+                            <form id="language-form" action="/change-language" method="POST" class="btn-group">
+                                <select name="language" onchange="document.getElementById('language-form').submit()"
+                                    class="btn btn-primary dropdown-toggle">
+                                    <option value="en" <% if(currentLanguage==='en' ) { %> selected <% } %>>En</option>
+                                    <option value="ru" <% if(currentLanguage==='ru' ) { %> selected <% } %>>Ru</option>
+                                </select>
+                            </form>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div id="explore-food">
+    <div class="explore-food wrapper">
+        <div id="explore-food"></div>
+    <section class="package" id="package">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="text-content text-center">
+                        <h2><%= language.AlldishesW %></h2>
+                    </div>
+                </div>
+            </div>
+            <ul class="package-list">
+                <% for (let i = 0; i < Math.ceil(dishes.length / 3); i++) { %>
+                    <li>
+                        <div class="row justify-content-center">
+                            <% for (let j = i * 3; j < Math.min((i + 1) * 3, dishes.length); j++) { %>
+                                <div class="col-lg-4">
+                                    <div class="package-card card">
+    
+                                        <div id="carousel<%= dishes[j]._id %>" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                <% for (let k = 0; k < dishes[j].images.length; k++) { %>
+                                                    <li data-target="#carousel<%= dishes[j]._id %>" data-slide-to="<%= k %>" <% if (k === 0) { %>class="active"<% } %>></li>
+                                                <% } %>
+                                            </ol>
+                                            <div class="carousel-inner">
+                                                <% dishes[j].images.forEach((image, index) => { %>
+                                                    <div class="carousel-item <% if (index === 0) { %>active<% } %>">
+                                                        <img src="<%= image %>" class="d-block w-100 carousel-image" alt="Dish Image">
+                                                    </div>
+                                                <% }); %>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carousel<%= dishes[j]._id %>" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carousel<%= dishes[j]._id %>" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+    
+                                        <div class="card-content">
+                                            <% if (currentLanguage === 'en') { %>
+                                                <h3 class="h3 card-title">
+                                                    <%= dishes[j].names[0].name %>
+                                                </h3>
+                                                <p class="card-text">
+                                                    <%= dishes[j].descriptions[0].description %>
+                                                </p>
+                                            <% } else if (currentLanguage === 'ru') { %>
+                                                <h3 class="h3 card-title">
+                                                    <%= dishes[j].names[1].name %>
+                                                </h3>
+                                                <p class="card-text">
+                                                    <%= dishes[j].descriptions[1].description %>
+                                                </p>
+                                            <% } %>
+                                        </div>
+                                        <div class="card-price">
+                                            <p class="price">
+                                                $ <%= dishes[j].price %>
+                                            </p>
+                                            <a href="/dishes/<%= dishes[j]._id %>?lang=<%= currentLanguage %>" class="main-btn mt-4"ы><%= translation.showmore %></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </section>
+    
+</div>
+    <footer class="footer">
+        <div class="footer-bottom">
+            <div class="container">
+
+                <p class="copyright">
+                    Shakhnur Aubakirov SE-2207
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/fontawesome.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
